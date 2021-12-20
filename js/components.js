@@ -65,3 +65,8 @@ Crafty.c("hazardTile", {
             this.requires('Tile, 2D, Canvas, hazStripe, Collision, Interactible')
           },
 });
+Crafty.c("buttonTile", {
+  init: function() {
+      this.requires('Tile, 2D, Canvas, buttonUp, Collision, Interactible')
+    },
+});

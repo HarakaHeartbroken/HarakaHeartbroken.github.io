@@ -18,7 +18,18 @@ var map_assets = {
         }
     }
 };
-
+var button_assets = {
+    "sprites": {
+        "button.png": {
+            tile: 16,
+            tileh: 16,
+            map: {
+                buttonUp: [0,0],
+                buttonDown: [1,0],
+            }
+        }
+    }
+};
 var red_assets = {
     "sprites": {
         "redshirt.png": {
@@ -107,7 +118,7 @@ Crafty.load(map_assets);
 Crafty.load(computer_assets);
 Crafty.load(environmental_assets);
 Crafty.load(laser_assets);
-
+Crafty.load(button_assets);
 
 
 
@@ -204,6 +215,15 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
         window.alert("Hey! Don't push me!")
         this.shift(2*evt[0].nx, 2*evt[0].ny)
     })
+    .onHit("buttonTile", function(evt){
+        Crafty.e("2d, Canvas, buttonDown, Collision, Wall")
+        .attr({x: 336, y: 16, z: 2, w: 16, h: 16})
+        console.log("Hit an button at X = "+ this.x + ", Y = " + this.y + "!")
+        window.alert("You pressed a big red button! There's an ominous rumbling of machinery powering up and...")
+        window.alert("...")
+        window.alert("Nothing happens. Well, that was disappointing.")
+        this.shift(2*evt[0].nx, 2*evt[0].ny)
+        })
     .onHit("gooTile", function(evt){
         console.log("Hit goo at X = "+ this.x + ", Y = " + this.y + "!")
         this.shift(2*evt[0].nx, 2*evt[0].ny)
@@ -222,6 +242,7 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
         .onHit('computerTerminalTile', function(evt){
             this.shift(2*evt[0].nx, 2*evt[0].ny)
             window.alert("That's a computer!")
+            window.alert("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.")
         })
         .onHit('gooTile', function(evt){
             this.shift(2*evt[0].nx, 2*evt[0].ny)
@@ -240,6 +261,14 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
         .onHit("NPC", function(evt){
             console.log("Hit an NPC at X = "+ this.x + ", Y = " + this.y + "!")
             window.alert("Hey! Don't push me!")
+            this.shift(2*evt[0].nx, 2*evt[0].ny)
+            })
+        .onHit("buttonTile", function(evt){
+            Crafty.e("2d, Canvas, buttonDown, Collision, Wall")
+            .attr({x: 336, y: 16, z: 2, w: 16, h: 16})
+            console.log("Hit an button at X = "+ this.x + ", Y = " + this.y + "!")
+            window.alert("You pressed a big red button! There's an ominous rumbling of machinery powering up and...")                window.alert("...")
+            window.alert("Nothing happens. Well, that was disappointing.")
             this.shift(2*evt[0].nx, 2*evt[0].ny)
             })
             
