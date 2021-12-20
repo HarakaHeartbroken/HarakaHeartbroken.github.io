@@ -171,15 +171,25 @@ Crafty.defineScene("gameScreen", function(){
     mapRender(backMap)
     mapRender(demoMap)
 
-    Crafty.e("2d, Canvas, greenstatic, SpriteAnimation, Collision, NPC")
+var guard = Crafty.e("2d, Canvas, greenstatic, SpriteAnimation, Collision, NPC, Guard")
     .attr({x: 160, y: 110, z: 2, w: 16, h: 16})
-    
+var hiddenTile = Crafty.e("2D, Canvas, vertWall, Collision, Wall, secretPanel")
+    .attr({x: 160, y: 64, z: 2, w: 16, h: 16})
 var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourway, Player")
     .attr({lives: 6, x: 50, y: 50, z: 2, w: 16, h: 16})
     .fourway(100)
     .onHit('Wall', function(evt){
       console.log("Hit a wall at X = "+ this.x + ", Y = " + this.y)
       this.shift(2*evt[0].nx, 2*evt[0].ny)
+    })
+    .onHit('secretPanel', function(evt){
+        window.alert("Hey, you found a loose tile! Messing with Friend Computer's flawless design " +
+        "of this facility would be Treason, so you absolutely don't paw at the screws until the tile " +
+        " swings out neat as you please. Update: You found a wall tile that swings out neat as you please.");
+        hiddenTile.destroy();
+        demoMap[4][10] = 0;
+        demoMap[3][10] = 0;
+        mapRender(demoMap, 1);
     })
     .onHit('hazardTile', function(evt){
         console.log("Made it to the door at "+ this.x + ", Y = " + this.y + "!")
@@ -190,14 +200,14 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
       console.log("Got blowed up at X = "+ this.x + ", Y = " + this.y + "!")
       this.lives -= 1;
       if(this.lives > 0){
-      window.alert(
+        this.shift(2*evt[0].nx, 2*evt[0].ny)
+        player.animate("death", 2)
+      setTimeout(() => {window.alert(
           "You stepped into a laser above your clearance level!" + 
           " Your sizzling ashes slowly sink to the floor. You have " +
           this.lives + 
-          " clones remaining!")
+          " clones remaining!")})
       console.log(this.lives);
-      player.animate("death", 2)
-      this.shift(2*evt[0].nx, 2*evt[0].ny)
       }
       else{
           Crafty.enterScene("gameOver")
@@ -281,17 +291,21 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
         player.animate("death", 2)
         player.destroy()
         var greenPlayer = Crafty.e("2D, Canvas, greenstatic, Collision, SpriteAnimation, Fourway, Player")
-          .attr({x: this.x, y: this.y, z: 2, w: 16, h: 16})
+          .attr({lives: this.lives, x: this.x, y: this.y, z: 2, w: 16, h: 16})
           .fourway(100)
+        .onHit('secretPanel', function(evt){
+            window.alert("Hey, you found a loose tile! Messing with Friend Computer's flawless design " +
+            "of this facility would be Treason, so you absolutely don't paw at the screws until the tile " +
+            " swings out neat as you please. Update: You found a wall tile that swings out neat as you please.");
+            hiddenTile.destroy();
+            demoMap[4][10] = 0;
+            demoMap[3][10] = 0;
+            mapRender(demoMap, 1);
+        })
         .onHit('hazardTile', function(evt){
             console.log("Made it to the door at "+ this.x + ", Y = " + this.y + "!")
             window.alert("You made it! You've won the game!")
             Crafty.enterScene("gameWin")
-        })
-        .onHit('computerTerminalTile', function(evt){
-            this.shift(2*evt[0].nx, 2*evt[0].ny)
-            window.alert("That's a computer!")
-            window.prompt("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.")
         })
         .onHit('gooTile', function(evt){
             this.shift(2*evt[0].nx, 2*evt[0].ny)
@@ -320,6 +334,59 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
             window.alert("...")
             window.alert("Nothing happens. Well, that was disappointing.")
             this.shift(2*evt[0].nx, 2*evt[0].ny)
+            })
+            .onHit('computerTerminalTile', function(evt){
+                this.shift(2*evt[0].nx, 2*evt[0].ny)
+                window.alert("That's a computer!")
+                let chat1 = window.prompt("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.", "YES")
+                switch(chat1){
+                    case "YES":
+                        let chat2 = window.prompt("'H4ll0!' Friend Computer challenges you to a game, citizen!" + 
+                        " Do you choose ROCK, PAPER or SCISSORS?")
+                        switch(chat2){
+                            case "ROCK": 
+                                this.lives -= 1;
+                                if(this.lives>0){
+                                    window.alert("Friend Computer has selected: PAPER. You lose, citizen, and that " + 
+                                "must make you unhappy. Please report for Mandatory Happiness Re-Edutainment at once.");
+                                    player.animate("death", 2);
+                                    window.alert("You have " + this.lives + " clones remaining!");
+                                }
+                                else{
+                                    player.animate("death", 2);
+                                    Crafty.enterScene("gameOver");
+                                }
+                            break;
+                            case "PAPER":
+                                this.lives -= 1;
+                                if(this.lives>0){
+                                    window.alert("Friend Computer has selected: SCISSORS, and also you for Reactor " +
+                                    "Shielding Duty. Please report to the Reactor Core at once.");
+                                    player.animate("death", 2);
+                                    window.alert("You have " + this.lives + " clones remaining!");
+                                }
+                                else{
+                                    player.animate("death", 2);
+                                    Crafty.enterScene("gameOver");
+                                }
+                            break;
+                            case "SCISSORS":
+                                this.lives -= 1;
+                                if(this.lives>0){
+                                    window.alert("Friend Computer has selected: ROCK. Friend Computer is now delivering:" +
+                                    " ROCK. Please do not move.");
+                                    player.animate("death", 2);
+                                    window.alert("You have " + this.lives + " clones remaining!");
+                                }
+                                else{
+                                    player.animate("death", 2);
+                                    Crafty.enterScene("gameOver");
+                                }
+                            break;
+                        }
+                    case "NO":
+                        window.alert("You wisely realize Friend Computer has far better things to do than talk to you.")
+                }
             })
             
           
