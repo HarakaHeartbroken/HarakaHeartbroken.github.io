@@ -209,6 +209,55 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
     .onHit('computerTerminalTile', function(evt){
         this.shift(2*evt[0].nx, 2*evt[0].ny)
         window.alert("That's a computer!")
+        let chat1 = window.prompt("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.", "YES")
+        switch(chat1){
+            case "YES":
+                let chat2 = window.prompt("'H4ll0!' Friend Computer challenges you to a game, citizen!" + 
+                " Do you choose ROCK, PAPER or SCISSORS?")
+                switch(chat2){
+                    case "ROCK": 
+                        this.lives -= 1;
+                        if(this.lives>0){
+                            window.alert("Friend Computer has selected: PAPER. You lose, citizen, and that " + 
+                        "must make you unhappy. Please report for Mandatory Happiness Re-Edutainment at once.");
+                            player.animate("death", 2);
+                            window.alert("You have " + this.lives + " clones remaining!");
+                        }
+                        else{
+                            player.animate("death", 2);
+                            Crafty.enterScene("gameOver");
+                        }
+                    break;
+                    case "PAPER":
+                        this.lives -= 1;
+                        if(this.lives>0){
+                            window.alert("Friend Computer has selected: SCISSORS, and also you for Reactor " +
+                            "Shielding Duty. Please report to the Reactor Core at once.");
+                            player.animate("death", 2);
+                            window.alert("You have " + this.lives + " clones remaining!");
+                        }
+                        else{
+                            player.animate("death", 2);
+                            Crafty.enterScene("gameOver");
+                        }
+                    break;
+                    case "SCISSORS":
+                        this.lives -= 1;
+                        if(this.lives>0){
+                            window.alert("Friend Computer has selected: ROCK. Friend Computer is now delivering:" +
+                            " ROCK. Please do not move.");
+                            player.animate("death", 2);
+                            window.alert("You have " + this.lives + " clones remaining!");
+                        }
+                        else{
+                            player.animate("death", 2);
+                            Crafty.enterScene("gameOver");
+                        }
+                    break;
+                }
+            case "NO":
+                window.alert("You wisely realize Friend Computer has far better things to do than talk to you.")
+        }
     })
     .onHit("NPC", function(evt){
         console.log("Hit an NPC at X = "+ this.x + ", Y = " + this.y + "!")
@@ -242,7 +291,7 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
         .onHit('computerTerminalTile', function(evt){
             this.shift(2*evt[0].nx, 2*evt[0].ny)
             window.alert("That's a computer!")
-            window.alert("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.")
+            window.prompt("Do you want to speak to Friend Computer? Enter 'YES' or 'NO' now.")
         })
         .onHit('gooTile', function(evt){
             this.shift(2*evt[0].nx, 2*evt[0].ny)
@@ -267,7 +316,8 @@ var player = Crafty.e("2D, Canvas, redstatic, SpriteAnimation, Collision, Fourwa
             Crafty.e("2d, Canvas, buttonDown, Collision, Wall")
             .attr({x: 336, y: 16, z: 2, w: 16, h: 16})
             console.log("Hit an button at X = "+ this.x + ", Y = " + this.y + "!")
-            window.alert("You pressed a big red button! There's an ominous rumbling of machinery powering up and...")                window.alert("...")
+            window.alert("You pressed a big red button! There's an ominous rumbling of machinery powering up and...")                
+            window.alert("...")
             window.alert("Nothing happens. Well, that was disappointing.")
             this.shift(2*evt[0].nx, 2*evt[0].ny)
             })
