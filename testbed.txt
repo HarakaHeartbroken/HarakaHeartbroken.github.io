@@ -1,0 +1,17 @@
+use crafty "tiled" and mapeditor to replace map system
+https://www.mapeditor.org/
+https://github.com/danieltdt/crafty-tiled-map
+
+Goals- 
+
+simpler/more efficient map creation and editing
+template for NPC and object generation- size 1, 2, 3 makes 1x1, 2x2 etc or similiar, basic boxes with asset image on top
+NPC "library" system for future AI response/dialogue generator
+save system/instancing/save files
+skeleton of RPG system- stats, classes, feats and skill checks (d100 system use math.floor if needed)
+Craft Skeleton of larger game- make several rooms 
+in-game menu with settings, score, restart, and lore/wiktionary
+in-game log with timestamp and summary of actual changes from action eg "got slimed- clearance level is now GREEN 19:02" 
+
+
+General scaling, make original task annoying as hell to complete, total sandbox otherwise- ideally even procedurally generated rooms etc

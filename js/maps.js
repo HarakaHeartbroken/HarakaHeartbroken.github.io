@@ -77,6 +77,22 @@ var demoMap = [
 
   // takes a given array map and renders it according to the map key/tile definitions
 // at the z-index passed
+
+// TODO: Refactor to case switch or other cleaner instead of 20x else if statements
+// function F => (name, x, y, w, h)
+// switch(map[i][j]){
+
+    // case(00) 
+    // case(01)
+    // case(10)
+    // etc
+
+// something like Crafty.e(switch(day[i][j])) since all the normal attributes are the same?
+// could use something similiar to tag NPCs once created
+
+//} 
+
+
 function mapRender(map, z){
     for(i = 0; i<map.length; i++){
         for(j = 0; j<map[i].length; j++){

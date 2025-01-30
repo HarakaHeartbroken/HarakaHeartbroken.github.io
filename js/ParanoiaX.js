@@ -1,6 +1,7 @@
 Crafty.init(600, 400,);
 
 // a series of asset definitions using sprite tilesheet terminology
+// TODO: refactor to "assets" instead of 20 different vars 
 var map_assets = {
     "sprites": {
         "tileset.png": {
